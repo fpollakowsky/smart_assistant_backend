@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/jasonlvhit/gocron"
 	"log"
 	"os"
 	"runtime"
@@ -24,7 +25,7 @@ func main() {
 	}
 
 	cron.AddCron()
-
+	<-gocron.Start()
 	// msg := <- mysql.InitStaticDatabaseCache()
 	// log.Println(msg)
 	select {}
