@@ -4,7 +4,9 @@ import (
 	"fmt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"log"
+	"math/rand"
 	"os"
+	"time"
 )
 
 var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
@@ -17,10 +19,12 @@ func Connect() mqtt.Client {
 	mqtt.WARN = log.New(os.Stdout, "[WARN]  ", 0)
 	//mqtt.DEBUG = log.New(os.Stdout, "[DEBUG] ", 0)
 
-	var broker = "192.168.2.114"
+	var broker = "192.168.0.106"
 	var port = "1883"
 
-	opts := mqtt.NewClientOptions().AddBroker("tcp://" + broker + ":" + port).SetClientID("sample")
+	rand.Seed(time.Now().UnixNano())
+
+	opts := mqtt.NewClientOptions().AddBroker("tcp://" + broker + ":" + port).SetClientID("nethcon" + randSeq(8))
 
 	c := mqtt.NewClient(opts)
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
@@ -39,4 +43,14 @@ func subscribe(client mqtt.Client, topic string) {
 	if token := client.Subscribe(topic, 0, messagePubHandler); token.Wait() && token.Error() != nil {
 		fmt.Println(token.Error())
 	}
+}
+
+func randSeq(n int) string {
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }
