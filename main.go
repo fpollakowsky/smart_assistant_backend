@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"runtime"
+	"shome-backend/api"
 	"shome-backend/cron"
 	"shome-backend/mqtt"
 )
@@ -24,9 +25,8 @@ func main() {
 		log.New(os.Stdout, "[INFO] Release Mode", 0)
 	}
 
+	api.HandleRequests()
+
 	cron.AddCron()
 	<-gocron.Start()
-	// msg := <- mysql.InitStaticDatabaseCache()
-	// log.Println(msg)
-	select {}
 }

@@ -1,7 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="build" type="GoApplicationRunConfiguration" factoryName="Go Application">
+  <configuration default="false" name="build ext" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="shome-backend" />
     <working_directory value="$PROJECT_DIR$" />
+    <parameters value="-brokerIP=192.168.2.106" />
     <kind value="FILE" />
     <package value="shome-backend" />
     <directory value="$PROJECT_DIR$" />
