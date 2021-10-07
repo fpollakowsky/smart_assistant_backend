@@ -1,12 +1,12 @@
 package mqtt
 
 import (
-	"flag"
 	"fmt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"log"
 	"math/rand"
 	"os"
+	param "shome-backend/flags"
 	"time"
 )
 
@@ -15,13 +15,6 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
 }
 
 func Connect() mqtt.Client {
-	var brokerIP string
-	var brokerPort string
-
-	flag.StringVar(&brokerIP, "brokerIP", "localhost", "Sets broker IP")
-	flag.StringVar(&brokerPort, "brokerPort", "1883", "Sets broker IP")
-	flag.Parse()
-
 	mqtt.ERROR = log.New(os.Stdout, "[ERROR] ", 0)
 	mqtt.CRITICAL = log.New(os.Stdout, "[CRIT] ", 0)
 	mqtt.WARN = log.New(os.Stdout, "[WARN]  ", 0)
@@ -29,7 +22,7 @@ func Connect() mqtt.Client {
 
 	rand.Seed(time.Now().UnixNano())
 
-	opts := mqtt.NewClientOptions().AddBroker("tcp://" + brokerIP + ":" + brokerPort).SetClientID("nethcon" + randSeq(8))
+	opts := mqtt.NewClientOptions().AddBroker("tcp://" + param.BrokerIP + ":" + param.BrokerPort).SetClientID("nethcon" + randSeq(8))
 
 	c := mqtt.NewClient(opts)
 	if token := c.Connect(); token.Wait() && token.Error() != nil {

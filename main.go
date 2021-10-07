@@ -7,17 +7,11 @@ import (
 	"runtime"
 	"shome-backend/api"
 	"shome-backend/cron"
-	"shome-backend/mqtt"
+	param "shome-backend/flags"
 )
 
 func main() {
 	log.Print("[INFO] REST API v0.1 - Nethcon - eHome")
-
-	client := mqtt.Connect()
-	// mqtt2.Sub(c)
-	// mqtt2.NewRequest(c, "test","test")
-
-	mqtt.NewRequest(client, "test", "test", "test")
 
 	if runtime.GOOS == "windows" {
 		log.New(os.Stdout, "[WARN] Debug Mode", 0)
@@ -25,6 +19,7 @@ func main() {
 		log.New(os.Stdout, "[INFO] Release Mode", 0)
 	}
 
+	param.HandleFlags()
 	api.HandleRequests()
 
 	cron.AddCron()

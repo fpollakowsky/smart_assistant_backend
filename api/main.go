@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	param "shome-backend/flags"
 	"shome-backend/middleware"
 	"shome-backend/models"
 )
@@ -16,13 +17,17 @@ func HandleRequests() {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	nethcon := middleware.APIKeyMiddleware{APIToken: make(map[string]string)}
-	nethcon.Populate()
+	if !param.Debug {
+		nethcon := middleware.APIKeyMiddleware{APIToken: make(map[string]string)}
+		nethcon.Populate()
 
-	authorized := r.Group("/")
-	authorized.Use(nethcon.TokenAuthMiddleware())
-	{
-		authorized.POST("/v2/blinder", blinderEndpoint)
+		authorized := r.Group("/")
+		authorized.Use(nethcon.TokenAuthMiddleware())
+		{
+			authorized.POST("/v2/blinder", blinderEndpoint)
+		}
+	} else {
+		r.POST("/v2/blinder", blinderEndpoint)
 	}
 
 	r.Run(":80")

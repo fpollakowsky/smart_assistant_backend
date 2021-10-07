@@ -11,7 +11,7 @@ func connect() *sql.DB {
 	if runtime.GOOS == "windows" {
 		url = "nethcon.com:3336"
 	} else {
-		url = "localhost"
+		url = "nethcon.com:3336"
 	}
 
 	db, err := sql.Open("mysql", "ecity:#BLNuo&ehd0JAPW7@tcp("+url+")/ecity")
