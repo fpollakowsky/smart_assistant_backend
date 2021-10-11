@@ -28,18 +28,18 @@ func HandleRequests() {
 		{
 			authorized.POST("/v2/blinder", blinderEndpoint)
 			authorized.POST("/v2/light", lightEndpoint)
-			authorized.POST("/v2/devices", deviceEnpoint)
+			authorized.POST("/v2/devices", deviceEndpoint)
 		}
 	} else {
 		r.POST("/v2/blinder", blinderEndpoint)
 		r.POST("/v2/light", lightEndpoint)
-		r.POST("/v2/devices", deviceEnpoint)
+		r.POST("/v2/devices", deviceEndpoint)
 	}
 
 	r.Run(":80")
 }
 
-func deviceEnpoint(c *gin.Context) {
+func deviceEndpoint(c *gin.Context) {
 	log.Println("Endpoint Hit: Device")
 
 	var _devices, err = mysql.GetDevices()
