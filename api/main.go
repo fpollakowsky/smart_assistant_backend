@@ -7,6 +7,8 @@ import (
 	param "shome-backend/flags"
 	"shome-backend/middleware"
 	"shome-backend/models"
+	"shome-backend/mqtt"
+	"shome-backend/mysql"
 )
 
 func HandleRequests() {
@@ -25,9 +27,11 @@ func HandleRequests() {
 		authorized.Use(nethcon.TokenAuthMiddleware())
 		{
 			authorized.POST("/v2/blinder", blinderEndpoint)
+			authorized.POST("/v2/light", lightEndpoint)
 		}
 	} else {
 		r.POST("/v2/blinder", blinderEndpoint)
+		r.POST("/v2/light", lightEndpoint)
 	}
 
 	r.Run(":80")
@@ -40,5 +44,39 @@ func blinderEndpoint(c *gin.Context) {
 	if err := c.ShouldBind(&_blinder); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+}
+
+func lightEndpoint(c *gin.Context) {
+	log.Println("Endpoint Hit: Light")
+	var _light models.Light
+
+	if err := c.ShouldBind(&_light); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var client = mqtt.Connect()
+
+	status, err := mysql.GetLightStatus(_light.Channel, _light.Room)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		return
+	}
+
+	if status == 1 {
+		mqtt.NewRequest(client, _light.Channel, _light.Room, "0")
+		err := mysql.UpdateLightStatus(_light.Channel, _light.Room, 0)
+		if err != nil {
+			c.JSON(http.StatusPreconditionFailed, gin.H{"error": err})
+			return
+		}
+	} else {
+		mqtt.NewRequest(client, _light.Channel, _light.Room, "1")
+		err := mysql.UpdateLightStatus(_light.Channel, _light.Room, 1)
+		if err != nil {
+			c.JSON(http.StatusPreconditionFailed, gin.H{"error": err})
+			return
+		}
 	}
 }
