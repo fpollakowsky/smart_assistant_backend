@@ -29,11 +29,13 @@ func HandleRequests() {
 			authorized.POST("/v2/blinder", blinderEndpoint)
 			authorized.POST("/v2/light", lightEndpoint)
 			authorized.POST("/v2/devices", deviceEndpoint)
+			authorized.POST("/v2/rooms", roomEndpoint)
 		}
 	} else {
 		r.POST("/v2/blinder", blinderEndpoint)
 		r.POST("/v2/light", lightEndpoint)
 		r.POST("/v2/devices", deviceEndpoint)
+		r.POST("/v2/rooms", roomEndpoint)
 	}
 
 	r.Run(":80")
@@ -50,6 +52,19 @@ func deviceEndpoint(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"devices": _devices})
+}
+
+func roomEndpoint(c *gin.Context) {
+	log.Println("Endpoint Hit: Device")
+
+	var _room, err = mysql.GetRooms()
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error: ": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"rooms": _room})
 }
 
 func blinderEndpoint(c *gin.Context) {

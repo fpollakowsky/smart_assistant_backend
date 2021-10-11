@@ -47,6 +47,31 @@ func GetDevices() ([]models.Device, error) {
 	return _devices, nil
 }
 
+func GetRooms() ([]string, error) {
+	db := connect()
+
+	var _rooms = make([]string, 0)
+
+	_rows, err := db.Query("SELECT DISTINCT devices.room FROM ehome.devices")
+	if err != nil {
+		return nil, err
+	}
+
+	for _rows.Next() {
+		var _room string
+
+		err = _rows.Scan(&_room)
+		if err != nil {
+			return _rooms, err
+		}
+
+		_rooms = append(_rooms, _room)
+	}
+
+	defer db.Close()
+	return _rooms, nil
+}
+
 func GetLightStatus(channel, room string) (float64, error) {
 	db := connect()
 	var status float64
@@ -83,7 +108,7 @@ func UpdateLightStatus(channel, room string, status float64) error {
 	return nil
 }
 
-func GetRooms(channel string) (int, error) {
+func GetStatus(channel string) (int, error) {
 	db := connect()
 	var status int
 
