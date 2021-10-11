@@ -1,5 +1,13 @@
 package models
 
+type Device struct {
+	ID      string `json:"ID"`
+	Channel string `json:"Channel"`
+	Room    string `json:"Room"`
+	Value   string `json:"Value"`
+	IP      string `json:"IP"`
+}
+
 type Blinder struct {
 	Room    string `json:"Room"`
 	Channel string `json:"Channel"`

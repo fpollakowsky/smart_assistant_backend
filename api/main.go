@@ -28,13 +28,28 @@ func HandleRequests() {
 		{
 			authorized.POST("/v2/blinder", blinderEndpoint)
 			authorized.POST("/v2/light", lightEndpoint)
+			authorized.POST("/v2/devices", deviceEnpoint)
 		}
 	} else {
 		r.POST("/v2/blinder", blinderEndpoint)
 		r.POST("/v2/light", lightEndpoint)
+		r.POST("/v2/devices", deviceEnpoint)
 	}
 
 	r.Run(":80")
+}
+
+func deviceEnpoint(c *gin.Context) {
+	log.Println("Endpoint Hit: Device")
+
+	var _devices, err = mysql.GetDevices()
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error: ": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"devices": _devices})
 }
 
 func blinderEndpoint(c *gin.Context) {

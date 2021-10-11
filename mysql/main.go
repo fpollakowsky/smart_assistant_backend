@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	_ "github.com/go-sql-driver/mysql"
+	"shome-backend/models"
 	"strconv"
 )
 
@@ -19,6 +20,31 @@ func connect() *sql.DB {
 	}
 
 	return db
+}
+
+func GetDevices() ([]models.Device, error) {
+	db := connect()
+
+	var _devices = make([]models.Device, 0)
+
+	_rows, err := db.Query("SELECT * FROM ehome.devices")
+	if err != nil {
+		return nil, err
+	}
+
+	for _rows.Next() {
+		var _device models.Device
+
+		err = _rows.Scan(&_device.ID, &_device.Channel, &_device.Room, &_device.IP, &_device.Value)
+		if err != nil {
+			return _devices, err
+		}
+
+		_devices = append(_devices, _device)
+	}
+
+	defer db.Close()
+	return _devices, nil
 }
 
 func GetLightStatus(channel, room string) (float64, error) {
