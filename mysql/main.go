@@ -35,7 +35,7 @@ func GetDevices() ([]models.Device, error) {
 	for _rows.Next() {
 		var _device models.Device
 
-		err = _rows.Scan(&_device.ID, &_device.Channel, &_device.Room, &_device.IP, &_device.Value)
+		err = _rows.Scan(&_device.ID, &_device.Channel, &_device.Room, &_device.IP, &_device.Value, &_device.Type)
 		if err != nil {
 			return _devices, err
 		}
