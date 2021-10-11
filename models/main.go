@@ -4,7 +4,7 @@ type Device struct {
 	ID      string `json:"ID"`
 	Channel string `json:"Channel"`
 	Room    string `json:"Room"`
-	Type    string `json:"type"`
+	Type    string `json:"Type"`
 	Value   string `json:"Value"`
 	IP      string `json:"IP"`
 }
