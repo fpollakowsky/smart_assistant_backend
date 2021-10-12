@@ -72,6 +72,31 @@ func GetRooms() ([]string, error) {
 	return _rooms, nil
 }
 
+func GetRoutines() ([]models.Routine, error) {
+	db := connect()
+
+	var _routines = make([]models.Routine, 0)
+
+	_rows, err := db.Query("SELECT * FROM ehome.routines")
+	if err != nil {
+		return nil, err
+	}
+
+	for _rows.Next() {
+		var _routine models.Routine
+
+		err = _rows.Scan(&_routine.ID, &_routine.Device, &_routine.Payload, &_routine.Room, &_routine.Channel, &_routine.Min, &_routine.Hour, &_routine.Day, &_routine.Status)
+		if err != nil {
+			return _routines, err
+		}
+
+		_routines = append(_routines, _routine)
+	}
+
+	defer db.Close()
+	return _routines, nil
+}
+
 func GetLightStatus(channel, room string) (float64, error) {
 	db := connect()
 	var status float64

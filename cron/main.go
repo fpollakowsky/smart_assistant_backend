@@ -1,19 +1,32 @@
 package cron
 
 import (
-	"fmt"
-	"github.com/jasonlvhit/gocron"
+	"context"
+	"github.com/procyon-projects/chrono"
+	"log"
+	"shome-backend/mqtt"
 )
 
-func task() {
-	fmt.Println("I am running task.")
+func task(channel, room, payload string) {
+	var client = mqtt.Connect()
+	mqtt.NewRequest(client, channel, room, payload)
 }
 
-func AddCron() {
-	gocron.Every(2).Seconds().Do(task)
-	//gocron.Every(1).Day().At("16:10").Do(task)
+func AddCron(min, hour, day, channel, room, payload string) error {
+	s := chrono.NewDefaultTaskScheduler()
+	_, err := s.ScheduleWithCron(func(ctx context.Context) {
+		task(channel, room, payload)
+	},
+		//min +" " + hour +" " + "* *" + day,
+		"0 "+min+" "+hour+" * * "+day,
+		chrono.WithLocation("Europe/Berlin"))
+
+	if err == nil {
+		log.Print("Task has been scheduled")
+	}
+
+	return nil
 }
 
 func RemoveCron(task interface{}) {
-	gocron.Remove(task)
 }

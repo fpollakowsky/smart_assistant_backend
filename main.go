@@ -1,12 +1,10 @@
 package main
 
 import (
-	"github.com/jasonlvhit/gocron"
 	"log"
 	"os"
 	"runtime"
 	"shome-backend/api"
-	"shome-backend/cron"
 	param "shome-backend/flags"
 )
 
@@ -22,6 +20,4 @@ func main() {
 	param.HandleFlags()
 	api.HandleRequests()
 
-	cron.AddCron()
-	<-gocron.Start()
 }

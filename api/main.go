@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"shome-backend/cron"
 	param "shome-backend/flags"
 	"shome-backend/middleware"
 	"shome-backend/models"
@@ -30,12 +31,14 @@ func HandleRequests() {
 			authorized.POST("/v2/light", lightEndpoint)
 			authorized.POST("/v2/devices", deviceEndpoint)
 			authorized.POST("/v2/rooms", roomEndpoint)
+			authorized.POST("/v2/routine", routineEndpoint)
 		}
 	} else {
 		r.POST("/v2/blinder", blinderEndpoint)
 		r.POST("/v2/light", lightEndpoint)
 		r.POST("/v2/devices", deviceEndpoint)
 		r.POST("/v2/rooms", roomEndpoint)
+		r.POST("/v2/routine", routineEndpoint)
 	}
 
 	r.Run(":80")
@@ -65,6 +68,46 @@ func roomEndpoint(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"rooms": _room})
+}
+
+func routineEndpoint(c *gin.Context) {
+	log.Println("Endpoint Hit: Routine")
+
+	responseData := make([]models.Routine, 0)
+
+	if c.PostForm("Payload") == "" {
+		routines, err := mysql.GetRoutines()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		for i := range routines {
+			var _data models.Routine
+			_data.ID = routines[i].ID
+			_data.Device = routines[i].Device
+			_data.Room = routines[i].Room
+			_data.Channel = routines[i].Channel
+			_data.Payload = routines[i].Payload
+			_data.Min = routines[i].Min
+			_data.Hour = routines[i].Hour
+			_data.Day = routines[i].Day
+			_data.Status = routines[i].Status
+			responseData = append(responseData, _data)
+		}
+
+		c.JSON(http.StatusOK, responseData)
+		return
+	} else {
+		var _routine models.Routine
+
+		if err := c.Bind(&_routine); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		_ = cron.AddCron(_routine.Min, _routine.Hour, _routine.Day, _routine.Channel, _routine.Room, _routine.Payload)
+	}
 }
 
 func blinderEndpoint(c *gin.Context) {
