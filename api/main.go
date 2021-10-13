@@ -10,6 +10,7 @@ import (
 	"shome-backend/models"
 	"shome-backend/mqtt"
 	"shome-backend/mysql"
+	"strconv"
 )
 
 func HandleRequests() {
@@ -106,7 +107,7 @@ func routineEndpoint(c *gin.Context) {
 			return
 		}
 
-		_ = cron.AddCron(_routine.Min, _routine.Hour, _routine.Day, _routine.Channel, _routine.Room, _routine.Payload)
+		_ = cron.Cron(_routine.Min, _routine.Hour, _routine.Day, _routine.Channel, _routine.Room, _routine.Payload, false)
 	}
 }
 
@@ -116,6 +117,22 @@ func blinderEndpoint(c *gin.Context) {
 
 	if err := c.ShouldBind(&_blinder); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var client = mqtt.Connect()
+
+	var status, err = strconv.ParseFloat(_blinder.Value, 8)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		return
+	}
+
+	mqtt.NewRequest(client, _blinder.Channel, _blinder.Room, "1")
+
+	err = mysql.UpdateStatus(_blinder.Channel, _blinder.Room, status)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "mysql failed"})
 		return
 	}
 }
@@ -139,14 +156,14 @@ func lightEndpoint(c *gin.Context) {
 
 	if status == 1 {
 		mqtt.NewRequest(client, _light.Channel, _light.Room, "0")
-		err := mysql.UpdateLightStatus(_light.Channel, _light.Room, 0)
+		err := mysql.UpdateStatus(_light.Channel, _light.Room, 0)
 		if err != nil {
 			c.JSON(http.StatusPreconditionFailed, gin.H{"error": err})
 			return
 		}
 	} else {
 		mqtt.NewRequest(client, _light.Channel, _light.Room, "1")
-		err := mysql.UpdateLightStatus(_light.Channel, _light.Room, 1)
+		err := mysql.UpdateStatus(_light.Channel, _light.Room, 1)
 		if err != nil {
 			c.JSON(http.StatusPreconditionFailed, gin.H{"error": err})
 			return

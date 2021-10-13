@@ -2,6 +2,7 @@ package cron
 
 import (
 	"context"
+	"fmt"
 	"github.com/procyon-projects/chrono"
 	"log"
 	"shome-backend/mqtt"
@@ -12,9 +13,10 @@ func task(channel, room, payload string) {
 	mqtt.NewRequest(client, channel, room, payload)
 }
 
-func AddCron(min, hour, day, channel, room, payload string) error {
+func Cron(min, hour, day, channel, room, payload string, remove bool) error {
 	s := chrono.NewDefaultTaskScheduler()
-	_, err := s.ScheduleWithCron(func(ctx context.Context) {
+
+	task, err := s.ScheduleWithCron(func(ctx context.Context) {
 		task(channel, room, payload)
 	},
 		//min +" " + hour +" " + "* *" + day,
@@ -25,6 +27,10 @@ func AddCron(min, hour, day, channel, room, payload string) error {
 		log.Print("Task has been scheduled")
 	}
 
+	if remove {
+		task.Cancel()
+		fmt.Println(task.IsCancelled())
+	}
 	return nil
 }
 

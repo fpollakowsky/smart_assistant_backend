@@ -111,7 +111,7 @@ func GetLightStatus(channel, room string) (float64, error) {
 	return status, nil
 }
 
-func UpdateLightStatus(channel, room string, status float64) error {
+func UpdateStatus(channel, room string, status float64) error {
 	db := connect()
 
 	result, err := db.Exec("UPDATE devices SET status=? WHERE channel=? AND room=?", status, channel, room)
