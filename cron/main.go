@@ -2,7 +2,6 @@ package cron
 
 import (
 	"context"
-	"fmt"
 	"github.com/procyon-projects/chrono"
 	"log"
 	"shome-backend/mqtt"
@@ -29,7 +28,6 @@ func Cron(min, hour, day, channel, room, payload string, remove bool) error {
 
 	if remove {
 		task.Cancel()
-		fmt.Println(task.IsCancelled())
 	}
 	return nil
 }
