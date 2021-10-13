@@ -85,7 +85,6 @@ func routineEndpoint(c *gin.Context) {
 
 		for i := range routines {
 			var _data models.Routine
-			_data.ID = routines[i].ID
 			_data.Device = routines[i].Device
 			_data.Room = routines[i].Room
 			_data.Channel = routines[i].Channel
@@ -94,6 +93,7 @@ func routineEndpoint(c *gin.Context) {
 			_data.Hour = routines[i].Hour
 			_data.Day = routines[i].Day
 			_data.Status = routines[i].Status
+			_data.Title = routines[i].Title
 			responseData = append(responseData, _data)
 		}
 

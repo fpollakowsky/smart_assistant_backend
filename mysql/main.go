@@ -77,7 +77,7 @@ func GetRoutines() ([]models.Routine, error) {
 
 	var _routines = make([]models.Routine, 0)
 
-	_rows, err := db.Query("SELECT * FROM ehome.routines")
+	_rows, err := db.Query("SELECT device, payload, room, channel, min, hour, day, status, title FROM ehome.routines")
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ func GetRoutines() ([]models.Routine, error) {
 	for _rows.Next() {
 		var _routine models.Routine
 
-		err = _rows.Scan(&_routine.ID, &_routine.Device, &_routine.Payload, &_routine.Room, &_routine.Channel, &_routine.Min, &_routine.Hour, &_routine.Day, &_routine.Status)
+		err = _rows.Scan(&_routine.Device, &_routine.Payload, &_routine.Room, &_routine.Channel, &_routine.Min, &_routine.Hour, &_routine.Day, &_routine.Status, &_routine.Title)
 		if err != nil {
 			return _routines, err
 		}

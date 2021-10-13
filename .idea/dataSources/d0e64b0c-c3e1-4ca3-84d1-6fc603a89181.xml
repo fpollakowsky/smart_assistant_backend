@@ -1175,17 +1175,21 @@
       <Position>9</Position>
       <DataType>enum(&apos;1&apos;, &apos;0&apos;)|0e</DataType>
     </column>
-    <index id="351" parent="332" name="routines_id_uindex">
+    <column id="351" parent="332" name="title">
+      <Position>10</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <index id="352" parent="332" name="routines_id_uindex">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="352" parent="332" name="PRIMARY">
+    <key id="353" parent="332" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="353" parent="332" name="routines_id_uindex">
+    <key id="354" parent="332" name="routines_id_uindex">
       <ColNames>id</ColNames>
       <UnderlyingIndexName>routines_id_uindex</UnderlyingIndexName>
     </key>

@@ -21,7 +21,7 @@ type Light struct {
 }
 
 type Routine struct {
-	ID      string `json:"ID"`
+	Title   string `json:"Title"`
 	Device  string `json:"Device"`
 	Payload string `json:"Payload"`
 	Room    string `json:"Room"`
