@@ -1,18 +1,6 @@
 package api
 
-import (
-	"github.com/gin-gonic/gin"
-	"log"
-	"net/http"
-	"shome-backend/cron"
-	param "shome-backend/flags"
-	"shome-backend/middleware"
-	"shome-backend/models"
-	"shome-backend/mqtt"
-	"shome-backend/mysql"
-	"strconv"
-)
-
+/*
 func HandleRequests() {
 	//gin.SetMode(gin.ReleaseMode)
 	gin.ForceConsoleColor()
@@ -170,3 +158,4 @@ func lightEndpoint(c *gin.Context) {
 		}
 	}
 }
+*/

@@ -1,18 +1,22 @@
-package cron
+package worker
 
 import (
 	"context"
 	"github.com/procyon-projects/chrono"
 	"log"
-	"shome-backend/mqtt"
+	"shome-backend/server/mqtt"
 )
+
+//
+// Workers for trashcan application
+//
 
 func task(channel, room, payload string) {
 	var client = mqtt.Connect()
 	mqtt.NewRequest(client, channel, room, payload)
 }
 
-func Cron(min, hour, day, channel, room, payload string, remove bool) error {
+func Worker(min, hour, day, channel, room, payload string, remove bool) error {
 	s := chrono.NewDefaultTaskScheduler()
 
 	task, err := s.ScheduleWithCron(func(ctx context.Context) {
@@ -32,5 +36,5 @@ func Cron(min, hour, day, channel, room, payload string, remove bool) error {
 	return nil
 }
 
-func RemoveCron(task interface{}) {
+func RemoveWorker(task interface{}) {
 }

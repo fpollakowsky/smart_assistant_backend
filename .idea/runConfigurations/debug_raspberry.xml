@@ -2,7 +2,7 @@
   <configuration default="false" name="debug-raspberry" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="shome-backend" />
     <working_directory value="$PROJECT_DIR$" />
-    <parameters value="-brokerIP=raspberrypi -debug" />
+    <parameters value="-brokerIP=raspberrypi -d" />
     <kind value="FILE" />
     <package value="shome-backend" />
     <directory value="$PROJECT_DIR$" />

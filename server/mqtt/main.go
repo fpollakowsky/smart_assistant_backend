@@ -6,7 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
-	param "shome-backend/flags"
+	"shome-backend/server/config"
 	"time"
 )
 
@@ -22,7 +22,7 @@ func Connect() mqtt.Client {
 
 	rand.Seed(time.Now().UnixNano())
 
-	opts := mqtt.NewClientOptions().AddBroker("tcp://" + param.BrokerIP + ":" + param.BrokerPort).SetClientID("nethcon" + randSeq(8))
+	opts := mqtt.NewClientOptions().AddBroker("tcp://" + config.BROKER_IP + ":" + config.BROKER_PORT).SetClientID("nethcon" + randSeq(8))
 
 	c := mqtt.NewClient(opts)
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
