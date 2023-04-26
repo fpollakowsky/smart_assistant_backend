@@ -24,6 +24,6 @@ func InitializeDatabase() {
 	}
 
 	// Migrate the schema
-	err = c.DB.AutoMigrate(&models.ApiKey{}, &models.Routine{}, &models.Device{})
+	err = c.DB.AutoMigrate(&models.ApiKey{}, &models.Routine{}, &models.Device{}, &models.Payload{})
 
 }

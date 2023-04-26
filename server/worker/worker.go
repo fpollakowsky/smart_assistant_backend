@@ -16,23 +16,27 @@ func task(channel, room, payload string) {
 	mqtt.NewRequest(client, channel, room, payload)
 }
 
-func Worker(min, hour, day, channel, room, payload string, remove bool) error {
+func NewJob(triggerTime, channel, room, payload string, remove bool) error {
 	s := chrono.NewDefaultTaskScheduler()
 
 	task, err := s.ScheduleWithCron(func(ctx context.Context) {
 		task(channel, room, payload)
 	},
-		//min +" " + hour +" " + "* *" + day,
-		"0 "+min+" "+hour+" * * "+day,
-		chrono.WithLocation("Europe/Berlin"))
+		triggerTime,
+		chrono.WithLocation("Europe/Berlin"),
+	)
 
-	if err == nil {
-		log.Print("Task has been scheduled")
+	if err != nil {
+		log.Fatal(err.Error())
+	} else {
+		if !remove {
+			log.Print("Task has been scheduled")
+		} else {
+			log.Print("Tasks canceled")
+			task.Cancel()
+		}
 	}
 
-	if remove {
-		task.Cancel()
-	}
 	return nil
 }
 

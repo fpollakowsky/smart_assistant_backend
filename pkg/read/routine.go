@@ -9,12 +9,16 @@ import (
 func Routine() (error, []models.Routine) {
 	var routines []models.Routine
 
-	result := config.DB.Find(&routines)
-	if result.Error != nil {
-		return result.Error, nil
+	err := config.DB.
+		Model(&models.Routine{}).
+		Preload("Payload.Device").
+		Preload("Payload").
+		Find(&routines).Error
+	if err != nil {
+		return err, nil
 	}
 
-	if result.RowsAffected == 0 {
+	if len(routines) == 0 {
 		return errors.New("zero devices found"), nil
 	}
 

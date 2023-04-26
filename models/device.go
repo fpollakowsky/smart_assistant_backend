@@ -1,7 +1,7 @@
 package models
 
 type Device struct {
-	ID      string  `json:"id" gorm:"primaryKey"`
+	ID      int     `json:"id" gorm:"primaryKey"`
 	Channel string  `json:"channel"`
 	Name    string  `json:"name"`
 	Room    string  `json:"room"`

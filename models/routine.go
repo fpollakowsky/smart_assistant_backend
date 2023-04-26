@@ -1,14 +1,28 @@
 package models
 
+import (
+	"gorm.io/gorm"
+	"time"
+)
+
 type Routine struct {
-	ID      int    `json:"ID" gorm:"primaryKey"`
-	Title   string `json:"Title"`
-	Device  string `json:"Device"`
-	Payload string `json:"Payload"`
-	Room    string `json:"Room"`
-	Channel string `json:"Channel"`
-	Min     string `json:"Min"`
-	Hour    string `json:"Hour"`
-	Day     string `json:"Day"`
-	Status  string `json:"Status"`
+	ID          int            `json:"id" gorm:"primaryKey"`
+	CreatedAt   time.Time      `json:"-"`
+	UpdatedAt   time.Time      `json:"-"`
+	DeletedAt   gorm.DeletedAt `json:"-" gorm:"index"`
+	Title       string         `json:"title"`
+	Status      bool           `json:"status"`
+	TriggerTime string         `json:"trigger_time"`
+	Payload     []Payload      `json:"payload"`
+}
+
+type Payload struct {
+	ID        int            `json:"id" gorm:"primaryKey"`
+	CreatedAt time.Time      `json:"-"`
+	UpdatedAt time.Time      `json:"-"`
+	DeletedAt gorm.DeletedAt `json:"-" gorm:"index"`
+	RoutineID int            `json:"-"`
+	DeviceID  int            `json:"-"`
+	Device    Device         `json:"device"`
+	Value     int            `json:"value"`
 }
