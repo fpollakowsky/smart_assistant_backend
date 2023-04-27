@@ -4,6 +4,7 @@ import (
 	"errors"
 	"shome-backend/models"
 	"shome-backend/server/config"
+	"shome-backend/server/worker"
 )
 
 func Routine(routine models.Routine) error {
@@ -15,6 +16,8 @@ func Routine(routine models.Routine) error {
 	if result.RowsAffected == 0 {
 		return errors.New("REMOVE_ROUTINE:: no rows affected")
 	}
+
+	worker.RemoveWorker(routine.ID)
 
 	return nil
 }

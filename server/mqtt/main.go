@@ -33,8 +33,10 @@ func Connect() mqtt.Client {
 	return c
 }
 
-func NewRequest(client mqtt.Client, channel, room, payload string) {
+func NewRequest(channel, room, payload string) {
+	var client = Connect()
 	client.Publish("/nethcon/"+room+"/"+channel, 1, false, payload)
+	client.Disconnect(250)
 }
 
 func subscribe(client mqtt.Client, topic string) {

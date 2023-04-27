@@ -17,21 +17,17 @@ func ChangeBlinderValue(c *gin.Context) {
 		return
 	}
 
-	var client = mqtt.Connect()
-
 	var status, err = strconv.ParseFloat(blinder.Value, 8)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
 
-	mqtt.NewRequest(client, blinder.Channel, blinder.Room, blinder.Value)
+	mqtt.NewRequest(blinder.Channel, blinder.Room, blinder.Value)
 
 	err = update.DeviceValue(blinder.Channel, blinder.Room, status)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "mysql failed"})
 		return
 	}
-
-	client.Disconnect(100)
 }

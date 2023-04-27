@@ -18,12 +18,11 @@ func InitializeDatabase() {
 		//QueryFields:                              true,
 	})
 	if err != nil {
-		log.Println("Failed to open connection")
+		log.Println("[DATABASE] Failed to open connection")
 	} else {
-		log.Println("Connection established")
+		log.Println("[DATABASE] Connection established")
 	}
 
 	// Migrate the schema
 	err = c.DB.AutoMigrate(&models.ApiKey{}, &models.Routine{}, &models.Device{}, &models.Payload{})
-
 }

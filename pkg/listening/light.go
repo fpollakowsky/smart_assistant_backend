@@ -17,8 +17,6 @@ func ChangeLightValue(c *gin.Context) {
 		return
 	}
 
-	var client = mqtt.Connect()
-
 	err, value := read.LightValue(light.Channel, light.Room)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
@@ -26,20 +24,18 @@ func ChangeLightValue(c *gin.Context) {
 	}
 
 	if *value == "1" {
-		mqtt.NewRequest(client, light.Channel, light.Room, "0")
+		mqtt.NewRequest(light.Channel, light.Room, "0")
 		err := update.DeviceValue(light.Channel, light.Room, 0)
 		if err != nil {
 			c.JSON(http.StatusPreconditionFailed, gin.H{"error": err})
 			return
 		}
 	} else {
-		mqtt.NewRequest(client, light.Channel, light.Room, "1")
+		mqtt.NewRequest(light.Channel, light.Room, "1")
 		err := update.DeviceValue(light.Channel, light.Room, 1)
 		if err != nil {
 			c.JSON(http.StatusPreconditionFailed, gin.H{"error": err})
 			return
 		}
 	}
-
-	client.Disconnect(100)
 }
