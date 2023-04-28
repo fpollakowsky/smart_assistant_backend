@@ -7,6 +7,7 @@ import (
 	"shome-backend/pkg/add"
 	"shome-backend/pkg/read"
 	"shome-backend/pkg/remove"
+	"shome-backend/pkg/update"
 )
 
 func GetAllRoutines(c *gin.Context) {
@@ -50,4 +51,20 @@ func RemoveRoutine(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "successfully removed routine"})
+}
+
+func UpdateRoutine(c *gin.Context) {
+	var routine models.Routine
+
+	if err := c.ShouldBind(&routine); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := update.Routine(routine)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "successfully updated routine"})
 }

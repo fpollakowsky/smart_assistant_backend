@@ -46,6 +46,7 @@ func HandleRequests() {
 		authorized.GET("/v2/routine", listening.GetAllRoutines)   // gets all routines from db
 		authorized.PUT("/v2/routine", listening.AddRoutine)       // adds a routine to db
 		authorized.DELETE("/v2/routine", listening.RemoveRoutine) // removes a routine to db
+		authorized.POST("/v2/routine", listening.UpdateRoutine)   // removes a routine to db
 	}
 
 	err := r.Run(":80")
