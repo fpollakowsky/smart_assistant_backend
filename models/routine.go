@@ -11,7 +11,7 @@ type Routine struct {
 	UpdatedAt   time.Time      `json:"-"`
 	DeletedAt   gorm.DeletedAt `json:"-" gorm:"index"`
 	Title       string         `json:"title"`
-	Status      bool           `json:"status"`
+	Status      *bool          `json:"status"`
 	TriggerTime string         `json:"trigger_time"`
 	Payload     []Payload      `json:"payload"`
 }

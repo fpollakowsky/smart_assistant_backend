@@ -28,7 +28,7 @@ func InitializeCron() {
 	log.Println("[CRON] found " + strconv.Itoa(len(routines)) + " routines")
 
 	for i := 0; i < len(routines); i++ {
-		if routines[i].Status == true {
+		if *routines[i].Status == true {
 			for y := 0; y < len(routines[i].Payload); y++ {
 				err = NewJob(
 					routines[i].TriggerTime,
