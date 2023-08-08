@@ -1,26 +1,37 @@
 package handler
 
 import (
+	"github.com/charmbracelet/log"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"shome-backend/pkg/listening"
-	"shome-backend/pkg/middleware"
-	"shome-backend/server/config"
-	"shome-backend/server/flags"
+	"home-ai-backend/pkg/listening"
+	"home-ai-backend/pkg/middleware"
+	"home-ai-backend/server/config"
+	"io"
+	"os"
 	"time"
 )
 
 func HandleRequests() {
-	config.DEBUG = flags.GetDebugFlag()
+	logger := log.NewWithOptions(os.Stderr, log.Options{
+		ReportTimestamp: true,
+		TimeFormat:      time.RFC822,
+	})
 
-	if !config.DEBUG {
+	if !*config.IS_DEBUG {
 		gin.SetMode(gin.ReleaseMode)
+		gin.DefaultWriter = io.Discard
+	} else {
+		gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
+			logger.Infof("%-15v %-10v %v", absolutePath, httpMethod, handlerName)
+		}
 	}
 
 	gin.ForceConsoleColor()
 
 	r := gin.New()
 	r.Use(gin.Logger())
+
 	r.Use(gin.Recovery())
 	r.MaxMultipartMemory = 8 << 20
 

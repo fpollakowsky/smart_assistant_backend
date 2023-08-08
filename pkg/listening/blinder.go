@@ -2,10 +2,10 @@ package listening
 
 import (
 	"github.com/gin-gonic/gin"
+	"home-ai-backend/models"
+	"home-ai-backend/pkg/update"
+	"home-ai-backend/server/mqtt"
 	"net/http"
-	"shome-backend/models"
-	"shome-backend/pkg/update"
-	"shome-backend/server/mqtt"
 	"strconv"
 )
 

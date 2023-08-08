@@ -2,9 +2,9 @@ package remove
 
 import (
 	"errors"
-	"shome-backend/models"
-	"shome-backend/server/config"
-	"shome-backend/server/worker"
+	"home-ai-backend/models"
+	"home-ai-backend/server/config"
+	"home-ai-backend/server/worker"
 )
 
 func Routine(routine models.Routine) error {

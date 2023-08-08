@@ -1,8 +1,8 @@
 package read
 
 import (
-	"shome-backend/models"
-	"shome-backend/server/config"
+	"home-ai-backend/models"
+	"home-ai-backend/server/config"
 )
 
 func ApiKeys() []models.ApiKey {

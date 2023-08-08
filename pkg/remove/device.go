@@ -2,8 +2,8 @@ package remove
 
 import (
 	"errors"
-	"shome-backend/models"
-	"shome-backend/server/config"
+	"home-ai-backend/models"
+	"home-ai-backend/server/config"
 )
 
 func Device(device models.Device) error {

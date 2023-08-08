@@ -3,11 +3,11 @@ package add
 import (
 	"errors"
 	"fmt"
+	"home-ai-backend/models"
+	"home-ai-backend/server/config"
+	"home-ai-backend/server/worker"
 	"log"
 	"os"
-	"shome-backend/models"
-	"shome-backend/server/config"
-	"shome-backend/server/worker"
 	"strconv"
 )
 

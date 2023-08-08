@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="debug-raspberry" type="GoApplicationRunConfiguration" factoryName="Go Application">
-    <module name="shome-backend" />
+    <module name="home-ai-backend" />
     <working_directory value="$PROJECT_DIR$" />
-    <parameters value="-brokerIP=raspberrypi -d" />
+    <parameters value="-ENVIRONMENT=dev -d " />
     <kind value="FILE" />
     <package value="shome-backend" />
     <directory value="$PROJECT_DIR$" />

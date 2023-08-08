@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config version="0.1">
+    <sql>
+        <database>ehome</database>
+        <user>ehome</user>
+    </sql>
+    <mqtt>
+        <broker_ip>raspberrypi</broker_ip>
+        <broker_port>1883</broker_port>
+    </mqtt>
+    <!--> CAUTION </-->
+    <developer_settings>
+        <!--> Defines if the database will be wiped before start</-->
+        <db_wipe>false</db_wipe>
+    </developer_settings>
+</config>

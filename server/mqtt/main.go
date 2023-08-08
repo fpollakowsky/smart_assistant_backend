@@ -3,10 +3,10 @@ package mqtt
 import (
 	"fmt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"home-ai-backend/server/config"
 	"log"
 	"math/rand"
 	"os"
-	"shome-backend/server/config"
 	"time"
 )
 

@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
+	"home-ai-backend/models"
+	"home-ai-backend/pkg/read"
 	"log"
-	"shome-backend/models"
-	"shome-backend/pkg/read"
 )
 
 func ApiKey() gin.HandlerFunc {

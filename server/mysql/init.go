@@ -3,9 +3,9 @@ package mysql
 import (
 	gmysql "gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"log"
-	"shome-backend/models"
-	c "shome-backend/server/config"
+	"home-ai-backend/models"
+	c "home-ai-backend/server/config"
+	"home-ai-backend/server/logging"
 )
 
 func InitializeDatabase() {
@@ -18,11 +18,14 @@ func InitializeDatabase() {
 		//QueryFields:                              true,
 	})
 	if err != nil {
-		log.Println("[DATABASE] Failed to open connection")
-	} else {
-		log.Println("[DATABASE] Connection established")
+		logging.PrintListFail("Initialize Database")
 	}
 
 	// Migrate the schema
 	err = c.DB.AutoMigrate(&models.ApiKey{}, &models.Routine{}, &models.Device{}, &models.Payload{})
+	if err != nil {
+		logging.PrintListFail("Initialize Database")
+	}
+
+	logging.PrintListDone("Initialize Database")
 }

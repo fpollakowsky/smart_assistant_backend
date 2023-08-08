@@ -1,8 +1,8 @@
 package update
 
 import (
-	"shome-backend/models"
-	"shome-backend/server/config"
+	"home-ai-backend/models"
+	"home-ai-backend/server/config"
 )
 
 func DeviceValue(channel, room string, value float64) error {

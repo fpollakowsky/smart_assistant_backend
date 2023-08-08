@@ -2,12 +2,12 @@ package listening
 
 import (
 	"github.com/gin-gonic/gin"
+	"home-ai-backend/models"
+	"home-ai-backend/pkg/add"
+	"home-ai-backend/pkg/read"
+	"home-ai-backend/pkg/remove"
+	"home-ai-backend/pkg/update"
 	"net/http"
-	"shome-backend/models"
-	"shome-backend/pkg/add"
-	"shome-backend/pkg/read"
-	"shome-backend/pkg/remove"
-	"shome-backend/pkg/update"
 )
 
 func GetAllRoutines(c *gin.Context) {

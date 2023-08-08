@@ -2,12 +2,13 @@ package worker
 
 import (
 	"context"
+	"github.com/charmbracelet/log"
 	"github.com/procyon-projects/chrono"
-	"log"
+	"home-ai-backend/models"
+	"home-ai-backend/pkg/read"
+	"home-ai-backend/server/logging"
+	"home-ai-backend/server/mqtt"
 	"os"
-	"shome-backend/models"
-	"shome-backend/pkg/read"
-	"shome-backend/server/mqtt"
 	"strconv"
 )
 
@@ -21,11 +22,9 @@ func InitializeCron() {
 	// add cron jobs from db
 	err, routines := read.Routine()
 	if err != nil {
-		log.New(os.Stdout, "[INFO] Error while setting up: "+err.Error(), 0)
-		return
+		logging.PrintListFail("Initialize Cron")
+		os.Exit(20)
 	}
-
-	log.Println("[CRON] found " + strconv.Itoa(len(routines)) + " routines")
 
 	for i := 0; i < len(routines); i++ {
 		if *routines[i].Status == true {
@@ -38,12 +37,13 @@ func InitializeCron() {
 					routines[i].ID,
 				)
 				if err != nil {
-					log.New(os.Stdout, "[SETUP] Error while setting up: "+err.Error(), 0)
+					log.Error("Failed setting up cronjob", "Error", err.Error())
 				}
 			}
-			log.Println("[CRON] routine added: " + routines[i].Title)
+			log.Debug("Routine added as cronjob: " + routines[i].Title)
 		}
 	}
+	logging.PrintListDone("Initialize Cron")
 }
 
 func task(channel, room, payload string) {
@@ -78,7 +78,7 @@ func RemoveWorker(id int) {
 	for i := 0; i < len(ScheduledTasks); i++ {
 		if id == ScheduledTasks[i].ID {
 			ScheduledTasks[i].Job.Cancel()
-			log.Println("[CRON] routine with ID: " + strconv.Itoa(id) + " removed")
+			log.Debug("Routine cronjob with id " + strconv.Itoa(id) + "removed")
 		}
 	}
 }
